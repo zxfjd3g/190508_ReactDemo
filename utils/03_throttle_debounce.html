@@ -30,7 +30,6 @@
             DOM 元素的拖拽功能实现（mousemove）
             抢购疯狂点击（mousedown）
             
-
     4. 函数防抖(debounce)
         1). 理解:
             在函数需要频繁触发时: 在规定时间内，只让最后一次生效，前面的不生效。
@@ -38,15 +37,9 @@
         2). 场景：
             实时搜索联想（keyup）
             文本输入的验证（连续输入文字后发送 AJAX 请求进行验证，验证一次就好）
-            判断scroll是否滑到底部，滚动事件+函数防抖
-   -->
+  -->
 
   <script>
-    /* 处理点击事件的回调函数 */
-    function handleClick() { // 处理事件的回调
-      console.log('处理点击事件')
-    }
-
     /* 实现函数节流的函数 */
     function throttle(callback, delay) {
       let start = 0 // 必须保存第一次点击立即调用
@@ -57,13 +50,9 @@
           callback.apply(this, arguments)
           start = current
         }
-        
       }
-    }    
-
-    // document.getElementById('throttle').onclick = handleClick
-    document.getElementById('throttle').onclick = throttle(handleClick, 1000)
-
+    }
+    
     /* 实现函数防抖的函数 */
     function debounce(callback, delay) {
       return function () {
@@ -84,6 +73,17 @@
         }, delay)
       }
     }
+  </script>
+  
+
+  <script>
+    /* 处理点击事件的回调函数 */
+    function handleClick() { // 处理事件的回调
+      console.log('处理点击事件')
+    }
+
+    // document.getElementById('throttle').onclick = handleClick
+    document.getElementById('throttle').onclick = throttle(handleClick, 1000)
     document.getElementById('debounce').onclick = debounce(handleClick, 1000)
   </script>
 
