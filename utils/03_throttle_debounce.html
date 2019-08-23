@@ -74,17 +74,57 @@
       }
     }
   </script>
+
+  <script>
+    /* 创建一个节流的函数 */
+    function throttle(callback, time) {
+      let start = 0 // 保证第一事件必然调用回调
+      return function (...args) {// 它指定给onclick
+        console.log('throtte 事件')
+        const current = Date.now()
+        if (current-start > time) {
+          // 在准备调用回调前, 将当前时间保存start
+          start = current
+          // 调用回调, 真正处理事件去
+          callback.apply(this, args)
+        }
+        
+      }
+    }
+
+    let timeoutId
+
+    /* 创建一个防抖的函数 */
+    function debounce(callback, time) {
+      return function (...args) {
+        console.log('debounce事件')
+        // 清除上一次未完成定时器
+        if (callback.timeoutId) {
+          clearTimeout(callback.timeoutId)
+        }
+
+        // 延迟指定时间调用回调函数
+        callback.timeoutId = setTimeout(() => {
+          // 删除保存的定时器id标识(定时器的回调执行了)
+          delete callback.timeoutId
+          // 调用回调, 真正处理事件去
+          callback.apply(this, args)
+        }, time);
+        
+      }
+    }
+  </script>
   
 
   <script>
     /* 处理点击事件的回调函数 */
-    function handleClick() { // 处理事件的回调
-      console.log('处理点击事件')
+    function handleClick(event) { // 处理事件的回调
+      console.log('处理点击事件', this, event)
     }
 
     // document.getElementById('throttle').onclick = handleClick
-    document.getElementById('throttle').onclick = throttle(handleClick, 1000)
-    document.getElementById('debounce').onclick = debounce(handleClick, 1000)
+    document.getElementById('throttle').onclick = throttle(handleClick, 2000)
+    document.getElementById('debounce').onclick = debounce(handleClick, 2000)
   </script>
 
 </body>
