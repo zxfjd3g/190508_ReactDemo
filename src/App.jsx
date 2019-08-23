@@ -15,6 +15,26 @@ export default class App extends Component {
     ]
   }
 
+  addComment = (comment) => {
+    const {comments} = this.state
+    this.setState({
+      comments: [comment, ...comments]
+    })
+  }
+
+  deleteComment = (index) => {
+    const {comments} = this.state
+    this.setState({
+      comments: comments.filter((c, i) => i!=index)
+      /* comments: comments.reduce((pre, comment, i) => {
+        if (i!=index) {
+          pre.push(comment)
+        }
+        return pre
+      }, []) */
+    })
+  }
+
   render() {
     const { comments } = this.state
     return (
@@ -29,8 +49,8 @@ export default class App extends Component {
           </div>
         </header>
         <div className="container">
-          <Add />
-          <List comments={comments}/>
+          <Add addComment={this.addComment}/>
+          <List comments={comments} deleteComment={this.deleteComment}/>
         </div>
       </div>
     )
