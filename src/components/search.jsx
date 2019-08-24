@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
+import PubSub from 'pubsub-js'
 
 export default class Search extends Component {
 
   search = () => {
     const searchName = this.refs.name.value.trim()
     if (searchName) {
-      this.props.setSearchName(searchName)
+      // 发布消息
+      PubSub.publish('search', searchName)
       this.refs.name.value = ''
     }
-    
   }
 
   render() {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import PubSub from 'pubsub-js'
 
 export default class Main extends Component {
 
@@ -10,50 +11,48 @@ export default class Main extends Component {
     errorMsg: '', // 请求失败需要显示的错误提示文本
   }
 
-  async componentWillReceiveProps (nextProps) { // 接收到了新的searchName, 应该发请求
-    const searchName = nextProps.searchName
-    // 更新状态(请求中)
-    this.setState({
-      firstView: false,
-      loading: true
+  componentDidMount () {
+    // 订阅消息(search)
+    this.token = PubSub.subscribe('search', async (msgName, searchName) => {
+      // 更新状态(请求中)
+      this.setState({
+        firstView: false,
+        loading: true
+      })
+
+      // 发ajax请求获取users
+      const url = `https://api.github.com/search/users?q=${searchName}`
+
+      try {
+        const response = await axios.get(url)
+        const result = response.data
+        const users = result.items.map(item => ({
+          username: item.login,
+          url: item.html_url,
+          avatar_url: item.avatar_url,
+        }))
+          // 如果成功, 更新状态(成功)
+        this.setState({
+          loading: false,
+          users
+        })
+      } catch (error) {
+        // 如果失败, 更新状态(失败)
+        this.setState({
+          loading: false,
+          errorMsg: '请求失败: statusCode is ' + error.response.status
+        })
+      }
     })
+  }
 
-    // 发ajax请求获取users
-    const url = `https://api.github.com/search/users2?q=${searchName}`
-
-    try {
-      const response = await axios.get(url)
-      const result = response.data
-      const users = result.items.map(item => ({
-        username: item.login,
-        url: item.html_url,
-        avatar_url: item.avatar_url,
-      }))
-        // 如果成功, 更新状态(成功)
-      this.setState({
-        loading: false,
-        users
-      })
-    } catch (error) {
-      // 如果失败, 更新状态(失败)
-      this.setState({
-        loading: false,
-        errorMsg: '请求失败: statusCode is ' + error.response.status
-      })
-    }
-    
-
-    /* axios.get(url)
-      .then(response => {
-        
-      })
-      .catch(error => {
-        debugger
-        
-      }) */
+  componentWillUnmount () {
+    // 在组件死亡前取消消息订阅
+    PubSub.unsubscribe(this.token)
   }
 
   render() {
+    console.log('render')
     const { firstView, loading, users, errorMsg } = this.state
 
     // 条件渲染

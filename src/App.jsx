@@ -7,22 +7,11 @@ import Main from './components/main'
 */
 export default class App extends Component {
 
-  state = {
-    searchName: '', // 搜索的关键字
-  }
-
-  setSearchName = (searchName) => {
-    this.setState({
-      searchName
-    })
-  }
-
   render() {
-    const {searchName} = this.state
     return (
       <div className="container">
-        <Search setSearchName={this.setSearchName}/>
-        <Main searchName={searchName}/>
+        <Search/>
+        <Main/>
       </div>
     )
   }
