@@ -16,7 +16,7 @@
       }
     }
   */
-  const callbacksObj = {} // {token1: callback1, token2: callback2}
+  let callbacksObj = {} // {token1: callback1, token2: callback2}
   let id = 0 // 用于生成token的标记
   // 1. 订阅消息
   PubSub.subscribe = function (msgName, callback) {
@@ -32,6 +32,8 @@
     } else {
       callbacks[token] = callback
     }
+    // 返回token
+    return token
   }
 
 
@@ -65,7 +67,19 @@
 
   // 4.  取消消息订阅
   PubSub.unsubscribe = function (flag) {
-
+    // 如果flag没有指定或者为null, 取消所有
+    if (flag===undefined || flag===null) {
+      callbacksObj = {}
+    } else if (flag.indexOf('token_')===0) { // flag是token
+      // 找到flag对应的callbacks
+      const callbacks = Object.values(callbacksObj).find(callbacks => callbacks.hasOwnProperty(flag))
+      // 如果存在, 删除对应的属性
+      if (callbacks) {
+        delete callbacks[flag]
+      }
+    } else {
+      delete callbacksObj[flag]
+    }
   }
 
   window.PubSub = PubSub
