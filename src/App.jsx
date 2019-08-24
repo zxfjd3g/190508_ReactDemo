@@ -12,7 +12,8 @@ export default class App extends Component {
     comments: [
       {id: 2, username: 'tom', content: 'React so easy!'},
       {id: 4, username: 'jack', content: 'React so so!'}
-    ]
+    ],
+    xxx: 1
   }
 
   addComment = (comment) => {
