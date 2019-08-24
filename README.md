@@ -5,7 +5,7 @@
 		* 指定好了所有的依赖
 		* 可以直接安装/编译/运行一个简单效果
 	2. react提供了一个专门用于创建react项目的脚手架库: create-react-app
-	3. 项目的整体技术架构为: react + webpack + es6  + babel + eslint
+	3. 项目的整体技术架构为: react + webpack + es6+  + babel + eslint
 
 ## 2). 创建项目并启动
 	npm install -g create-react-app
