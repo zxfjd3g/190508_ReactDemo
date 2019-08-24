@@ -16,7 +16,7 @@
       }
     }
   */
-  let callbacksObj = {} // {token1: callback1, token2: callback2}
+  let callbacksObj = {} // 保存所有回调的容器
   let id = 0 // 用于生成token的标记
   // 1. 订阅消息
   PubSub.subscribe = function (msgName, callback) {
@@ -65,20 +65,30 @@
     }
   }
 
-  // 4.  取消消息订阅
+  /*
+  4.  取消消息订阅
+  1). 没有传值, flag为undefined
+  2). 传入token字符串
+  3). msgName字符串
+  */
   PubSub.unsubscribe = function (flag) {
     // 如果flag没有指定或者为null, 取消所有
-    if (flag===undefined || flag===null) {
+    if (flag===undefined) {
       callbacksObj = {}
-    } else if (flag.indexOf('token_')===0) { // flag是token
-      // 找到flag对应的callbacks
-      const callbacks = Object.values(callbacksObj).find(callbacks => callbacks.hasOwnProperty(flag))
-      // 如果存在, 删除对应的属性
-      if (callbacks) {
-        delete callbacks[flag]
+    } else if (typeof flag==='string') {
+      if (flag.indexOf('token_')===0) { // flag是token
+        // 找到flag对应的callbacks
+        const callbacks = Object.values(callbacksObj).find(callbacks => callbacks.hasOwnProperty(flag))
+        // 如果存在, 删除对应的属性
+        if (callbacks) {
+          delete callbacks[flag]
+        }
+      } else {  // flag是msgName
+        delete callbacksObj[flag]
       }
+      
     } else {
-      delete callbacksObj[flag]
+      throw new Error('如果传入参数, 必须是字符串类型')
     }
   }
 
