@@ -42,8 +42,6 @@ export default class Main extends Component {
           errorMsg: '请求失败: statusCode is ' + error.response.status
         })
       })
-
-
   }
 
   render() {
