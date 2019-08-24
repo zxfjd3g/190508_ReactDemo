@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
-
-import Add from './components/add/add'
-import List from './components/list/list'
+import axios from 'axios'
 
 /* 
 应用根组件
@@ -9,52 +7,72 @@ import List from './components/list/list'
 export default class App extends Component {
 
   state = {
-    comments: [
-      {id: 2, username: 'tom', content: 'React so easy!'},
-      {id: 4, username: 'jack', content: 'React so so!'}
-    ],
-    xxx: 1
+    repoName: '',
+    repoUrl: ''
   }
 
-  addComment = (comment) => {
-    const {comments} = this.state
-    this.setState({
-      comments: [comment, ...comments]
-    })
-  }
+  /* 
+  在第一次render()后调用
+  执行异步操作: 发ajax请求
+  */
+  componentDidMount () {
+    const url = `https://api.github.com/search/repositories2?q=r&sort=stars`
+    // 使用axios发送异步ajax请求获取数据
+   /*  axios.get(url)
+      .then(response => { // response: 请求成功的所有相关信息的对象
+        // console.log(response)
+        // 得到响应体数据
+        const result = response.data
+        //取出需要的数据
+        const {name, html_url} = result.items[0]
+        // 更新状态
+        this.setState({
+          repoName: name,
+          repoUrl: html_url
+        })
 
-  deleteComment = (index) => {
-    const {comments} = this.state
-    this.setState({
-      comments: comments.filter((c, i) => i!=index)
-      /* comments: comments.reduce((pre, comment, i) => {
-        if (i!=index) {
-          pre.push(comment)
+      })
+      .catch(error => {
+        // debugger
+        console.log(error)
+        alert('请求失败')
+      }) */
+
+    // 使用fetch发送异步ajax请求获取数据
+    fetch(url)
+      .then((response) => {
+        if (response.ok) {
+          return response.json()   // 返回一个promise
+        } else {
+          throw new Error('request error status='+response.status)
         }
-        return pre
-      }, []) */
-    })
+      }).then((result) => {
+         //取出需要的数据
+         const {name, html_url} = result.items[0]
+         // 更新状态
+         this.setState({
+           repoName: name,
+           repoUrl: html_url
+         })
+      }).catch((error) => {
+        console.log(error)
+        alert('请求失败')
+      })
   }
 
   render() {
-    const { comments } = this.state
-    return (
-      <div>
-        <header className="site-header jumbotron">
-          <div className="container">
-            <div className="row">
-              <div className="col-xs-12">
-                <h1>请发表对React的评论</h1>
-              </div>
-            </div>
-          </div>
-        </header>
-        <div className="container">
-          <Add addComment={this.addComment}/>
-          <List comments={comments} deleteComment={this.deleteComment}/>
+    const { repoName, repoUrl } = this.state
+    if (!repoName) {
+      return <h2>LOADING...</h2>
+    } else {
+      return (
+        <div>
+          most star repo is 
+          <a href={repoUrl}>{repoName}</a>
         </div>
-      </div>
-    )
+      )
+    }
+
   }
 }
 
