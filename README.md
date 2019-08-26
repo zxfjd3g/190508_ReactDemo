@@ -188,14 +188,14 @@
 				属性2: activeClassName="myActive"
 
 		4). 路由组件的3个props
-				match: 包含请求参数
+				match: 包含params请求参数
 				history: 提供实现编程式路由跳转的方法
 				location: 包含请求路径
 
 		5). 编程式路由导航
 				history.push(path)
 				history.replace(path)
-				history.goBack(path)
+				history.goBack()
 
 		6). 配置多个切换的路由
 				<Switch>
@@ -212,7 +212,7 @@
 				创建: 请求对应的路由路径, 如果不存在创建, 如果存在复用它
 				死亡: 跳转到另一个路由路径(从当前路径离开)
 
-		9). 2种参数--向路由组件传递参数
+		9). 2种参数--向路由组件传递数据
 				1). query参数
 						路由路径: /login
 						请求路径: /login?name=tom&pwd=123
@@ -220,6 +220,12 @@
 						路由路径: /login/:name/:pwd
 						请求路径: /login/tom/123
 						路由组件: props.match.params ==> {name, pwd}
+		10). children属性
+				当标签有标签体内容时, 自动通过children属性传递虚拟DOM(组件对象)内部
+				children值
+						字符串: 标签体是文本
+						标签对象: 标签体只有一个子标签
+						标签对象的数组: 标签体只有多个子标签
 
 # 最流行的开源React UI组件库
 ## 1. 下载依赖模块
