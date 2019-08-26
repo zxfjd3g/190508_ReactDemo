@@ -32,16 +32,15 @@
     console.log('update()...', data)
   })
 
-  PubSub.unsubscribe(token)
-  PubSub.unsubscribe('add')
-  PubSub.unsubscribe()
+  // PubSub.unsubscribe(token)
+  // PubSub.unsubscribe('add')
+  // PubSub.unsubscribe()
 
   PubSub.publish('add', 12)
   PubSub.publish('update', 13)
+  console.log('----')
+  PubSub.unsubscribe(token)
 
-  PubSub.unsubscribe(2)
-
-  console.log('------')
 </script>
   
 </body>

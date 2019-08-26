@@ -40,9 +40,10 @@
   // 2. 发布异步的消息
   PubSub.publish = function (msgName, data) {
     // 取出当前消息对应的callbacks
-    const callbacks = callbacksObj[msgName]
+    let callbacks = callbacksObj[msgName]
     // 如果有值
     if (callbacks) {
+      callbacks = Object.assign({}, callbacks)
       // 启动定时器, 异步执行所有的回调函数
       setTimeout(() => {
         Object.values(callbacks).forEach(callback => {
@@ -51,6 +52,27 @@
       }, 0)
     }
   }
+
+  /* 
+  const obj  = {
+    a: 1
+    b: {
+      m: [1,2,3]
+    }
+  }
+
+  {
+    a: 1
+    b: obj.b
+  }
+
+  {
+    a: 1,
+    b: {
+      m: [1, 2, 3]
+    }
+  }
+  */
 
   // 3. 发布同步的消息
   PubSub.publishSync = function (msgName, data) {

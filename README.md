@@ -50,7 +50,7 @@
 # 3. app2: 实现github用户搜索功能
 ## 1). react应用与后台交互
 		交互方式: 发送ajax请求
-		在哪执行发请求的代码
+		在哪执行发请求的代码?
 				componentDidMount()
 				事件回调函数或相关函数中
 		使用哪个库?
@@ -69,8 +69,8 @@
 
 # 4. 组件间通信总结
 ## 1). 方式一: 通过props传递
-	一般数据-->父组件向子组件
-	函数数据-->子组件向父组件
+	一般属性-->父组件向子组件
+	函数属性-->子组件向父组件
 	问题: 隔代组件和兄弟组件通信不方便
 	
 ## 2). 方式二: 使用消息订阅(subscribe)-发布(publish)机制
@@ -78,29 +78,30 @@
 	下载: npm install pubsub-js --save
 	使用: 
 	  	import PubSub from 'pubsub-js' //引入
-	  	PubSub.subscribe('delete', function(msg, data){ }); //订阅
+	  	PubSub.subscribe('delete', (msg, data) => { }); //订阅
 	 	  PubSub.publish('delete', data) //发布消息
+	 	  PubSub.unsubscribe(flag) //取消订阅
 	优点: 可以支持任意关系组件之间的通信
 
-## 3). 事件监听理解
+## 3). 事件机制理解
 	1. DOM事件
 		* 绑定事件监听
 			* 事件名(类型): 只有有限的几个, 不能随便写
 			* 回调函数
 		* 用户操作触发事件(event)
 			* 事件名(类型)
-			* 数据
+			* 数据(event)
 	2. 自定义事件
 		* 绑定事件监听
 			* 事件名(类型): 任意
 			* 回调函数: 通过形参接收数据, 在函数体处理事件
-		* 触发事件(编码)
+		* 触发(emit)/分发(dispatch)事件(编码)
 			* 事件名(类型): 与绑定的事件监听的事件名一致
 			* 数据: 会自动传递给回调函数
       
 # 5. ES6新语法总结
 	定义变量/常量: const/let
-	解构赋值: let {a, b} = this.props   import {aa} from 'xxx'
+	解构赋值: let {a, b} = this.props   import {aa} from 'xxx'   ({x, y}) => {}
 	对象的简洁表达: {a, b}
 	箭头函数: 
 			组件的自定义方法: xxx = () => {}
@@ -110,8 +111,8 @@
 					没有自己的this,使用引用this查找的是外部this
 	扩展运算符: ...
 			拆解对象:  const MyProps = {}, <Xxx {...MyProps}>
-	类: class/extends/constructor/super
-	ES6模块化: export / default / import
+	类: class/extends/constructor/super/static
+	ES6模块化: export / default / import...from
 	异步: Promise / async / await
 
 # 6. 自定义消息订阅与发布
@@ -131,7 +132,7 @@
 						token3: callback3
 					}
 				}
-		2. 生成token
+		2. 生成唯一的token
 				id = 0
 				token = 'token_' + ++id
 
