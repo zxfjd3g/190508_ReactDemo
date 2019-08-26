@@ -11,6 +11,15 @@ export default class Message extends Component {
     messages: []
   }
 
+  pushShow = (id) => {
+    // 进行编程式路由跳转(导航)
+    this.props.history.push(`/home/message/${id}`)
+  }
+
+  replaceShow = (id) => {
+    this.props.history.replace(`/home/message/${id}`)
+  }
+
   componentDidMount () {
     // 模拟发异步ajax请求获取数据
     setTimeout(() => {
@@ -34,11 +43,15 @@ export default class Message extends Component {
             messages.map(m => (
               <li key={m.id}>
                 {/* <Link to={'/home/message/' + m.id}>{m.title}</Link> */}
-                <Link to={`/home/message/${m.id}`}>{m.title}</Link>
+                <Link to={`/home/message/${m.id}?name=tom&pwd=123`}>{m.title}</Link> &nbsp;
+                <button onClick={() => this.pushShow(m.id)}>push查看</button>&nbsp;
+                <button onClick={() => this.replaceShow(m.id)}>replace查看</button>
               </li>
             ))
           }
         </ul>
+        <button onClick={() => this.props.history.goBack()}>回退</button>
+        <hr/>
         {/* 请求的路由路径必须有3层, 第3层任意字符 */}
         <Route path="/home/message/:id" component={MessageDetail}></Route>
       </div>

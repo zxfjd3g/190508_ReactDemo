@@ -15,10 +15,22 @@ export default class MessageDetail extends Component {
     detail: {}
   }
 
+  // 如果不跳转到其它路由, 只是改变路由的params参数, 此方法不会调用
   componentDidMount () {
+    const id = this.props.match.params.id * 1
+    // 模拟发ajax请求
+    this.getDetail(id)
+  }
+
+  // 接收到新的属性 <===路由参数变化
+  componentWillReceiveProps (nextProps) {
+    const id = nextProps.match.params.id * 1
+    this.getDetail(id)
+  }
+
+  getDetail = (id) => {
     // 模拟发ajax请求
     setTimeout(() => {
-      const id = this.props.match.params.id * 1
       const detail = allDetails.find(detail => detail.id===id)
       this.setState({
         detail

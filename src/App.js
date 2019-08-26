@@ -52,4 +52,16 @@ export default function App(props) {
 /* 
 Route:  进行路由匹配时使用是逐级匹配, 默认是模糊匹配, 但可以指定完全匹配
 Switch: 一旦匹配上Switch中的某个Route, 后面的不现看
+路由组件对象的创建和死亡
+  创建: 请求对应的路由路径, 如果不存在创建, 如果存在复用它
+  死亡: 跳转到另一个路由路径(从当前路径离开)
+
+2种参数
+  1). query参数
+    路由路径: /login
+    请求路径: /login?name=tom&pwd=123
+  2). params参数
+    路由路径: /login/:name/:pwd
+    请求路径: /login/tom/123
+    路由组件: props.match.params ==> {name, pwd}
 */
