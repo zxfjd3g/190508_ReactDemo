@@ -9,8 +9,9 @@ module.exports = override(
     style: true,  // 加载less进行重新编译打包
   }),
 
+  // 添加less的配置
   addLessLoader({
     javascriptEnabled: true,
-    modifyVars: { '@primary-color': '#1DA57A' },
+    modifyVars: { '@primary-color': '#1DA57A' }, // 指定主体颜色为绿色
   }),
 );

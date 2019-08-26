@@ -141,7 +141,115 @@
 		2. 发布消息区别同步与异步
 		3. 取消订阅时区别不同情况的flag
 
-<!-- 
-执行函数定义: 创建函数对象
-执行函数调用: 必须在创建函数对象之后
- -->
+# 路由
+## 1. 理解react-router-dom
+    react的一个插件库
+    专门用来实现一个SPA应用
+    基于react的项目基本都会用到此库
+
+## 2. 几个重要问题
+		1). SPA应用
+				单页Web应用（single page web application，SPA）
+				整个应用只有一个完整的页面
+				点击页面中的链接不会刷新页面, 本身也不会向服务器发请求
+				当点击链接时, 只会做页面的局部更新
+				数据都需要通过ajax请求获取, 并在前端异步展现
+
+		2). 路由
+				1. 什么是路由?
+						一个路由就是一个映射关系(key:value)
+						key为路由路径, value可能是function/component
+				2. 路由分类
+						后台路由: node服务器端路由, value是function, 用来处理客户端提交的请求并返回一个响应数据
+						前台路由: 浏览器端路由, value是component, 当请求的是路由path时, 浏览器端前没有发送http请求, 但界面会更新显示对应的组件 
+				3. 后台路由
+						注册路由: router.get(path, function(req, res))
+						当node接收到一个请求时, 根据请求路径找到匹配的路由, 调用路由中的函数来处理请求, 返回响应数据
+				4 前端路由
+						注册路由: <Route path="/about" component={About}>
+						当浏览器的hash变为#about时, 当前路由组件就会变为About组件
+
+## 3. 使用
+		1). react-router中的相关组件: 
+				BrowserRouter: 内部使用history的state灰实现的router
+				HashRouter: 内部使用historyhash来实现的router
+				Route: 路由组件, 注册路由 
+				Redirect: 自动重定向到指定的路由
+				Switch: 用来切换显示多个router中的某一个
+				NavLink: 生成路由链接, 当前路由链接有特别的类名
+				Link: 生成路由链接
+
+		2). Route: 路由组件
+				属性1: path="/xxx"  
+				属性2: component={Xxx}
+
+		3). NavLink/Link: 路由链接
+				属性1: to="/xxx"
+				属性2: activeClassName="myActive"
+
+		4). 路由组件的3个props
+				match: 包含请求参数
+				history: 提供实现编程式路由跳转的方法
+				location: 包含请求路径
+
+		5). 编程式路由导航
+				history.push(path)
+				history.replace(path)
+				history.goBack(path)
+
+		6). 配置多个切换的路由
+				<Switch>
+						<Route path="/about" component={About}></Route>
+						<Route path="/home" component={Home}></Route>
+						<Redirect to="/about"/> {/* 当请求路径与上面的都不匹配, 自动使用 */}
+				</Switch>
+
+		7). 路由匹配问题
+				Route:  进行路由匹配时使用是逐级匹配, 默认是模糊匹配, 但可以指定完全匹配
+				Switch: 一旦匹配上Switch中的某个Route, 后面的不现看
+
+		8). 路由组件对象的创建和死亡
+				创建: 请求对应的路由路径, 如果不存在创建, 如果存在复用它
+				死亡: 跳转到另一个路由路径(从当前路径离开)
+
+		9). 2种参数--向路由组件传递参数
+				1). query参数
+						路由路径: /login
+						请求路径: /login?name=tom&pwd=123
+				2). params参数
+						路由路径: /login/:name/:pwd
+						请求路径: /login/tom/123
+						路由组件: props.match.params ==> {name, pwd}
+
+# 最流行的开源React UI组件库
+## 1. 下载依赖模块
+		npm install --save-dev react-app-rewired customize-cra babel-plugin-import
+		npm install --save-dev less less-loader
+
+## 2. 添加配置:  config-overrides.js
+    const { override, fixBabelImports, addLessLoader } = require('customize-cra');
+
+    module.exports = override(
+      // 配置babel-plugin-import: 
+      fixBabelImports('import', {
+        libraryName: 'antd', // 针对antd进行按需打包
+        libraryDirectory: 'es', // 去es文件夹对应的组件进行打包
+        // style: 'css',  // 自动打包组件对应的css样式
+        style: true,  // 加载less进行重新编译打包
+      }),
+
+      // 添加less的配置
+      addLessLoader({
+        javascriptEnabled: true,
+        modifyVars: { '@primary-color': '#1DA57A' }, // 指定主体颜色为绿色
+      }),
+    );
+## 3. 修改配置: package.json
+		"scripts": {
+			"start": "react-app-rewired start",
+			"build": "react-app-rewired build",
+			"test": "react-app-rewired test",
+			"eject": "react-scripts eject"
+		}
+## 4. 去除样式引入
+    // import 'antd/dist/antd.css'; 
