@@ -43,7 +43,7 @@
     let callbacks = callbacksObj[msgName]
     // 如果有值
     if (callbacks) {
-      callbacks = Object.assign({}, callbacks)
+      // callbacks = Object.assign({}, callbacks)
       // 启动定时器, 异步执行所有的回调函数
       setTimeout(() => {
         Object.values(callbacks).forEach(callback => {
