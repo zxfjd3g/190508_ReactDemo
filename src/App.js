@@ -1,7 +1,7 @@
 import React from "react"
 import {
-  BrowserRouter,
-  HashRouter,
+  BrowserRouter, /* 不带# */
+  HashRouter, /* 路由路径带# */
   Route,
   NavLink,
   Switch,
@@ -15,7 +15,7 @@ import Home from './pages/home'
 */
 export default function App(props) {
   return (
-    <HashRouter>
+    <BrowserRouter>
         <div className="row">
           <div className="col-xs-offset-2 col-xs-8">
             <div className="page-header">
@@ -35,7 +35,7 @@ export default function App(props) {
             <div className="panel">
               <div className="panel-body">
                 
-                {/* 注册路由 */}
+                {/* 注册路由 */} 
                 <Switch>
                   <Route path="/about" component={About}></Route>
                   <Route path="/home" component={Home}></Route>
@@ -45,6 +45,11 @@ export default function App(props) {
             </div>
           </div>
         </div>
-    </HashRouter>
-  );
+    </BrowserRouter>
+  )
 }
+
+/* 
+Route:  进行路由匹配时使用是逐级匹配, 默认是模糊匹配, 但可以指定完全匹配
+Switch: 一旦匹配上Switch中的某个Route, 后面的不现看
+*/
